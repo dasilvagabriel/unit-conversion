@@ -7,18 +7,27 @@ function App() {
   const [volumeConversion, setVolumeConversion] = useState('0 liters = 0.000 gallons');
   const [massConversion, setMassConversion] = useState('0 kilograms = 0.000 pounds');
 
-  const meterToFeet = 3.281;
-  const literToGallon = 0.264;
-  const kiloToPound = 2.204;
+  const meterToFeet = 3.281
+  const feetToMeter = 0.3048
+  const literToGallon = 0.264
+  const gallontoLiter = 3.78541
+  const poundToKilo = 0.453592
+  const kiloToPound = 2.204
 
   const handleConvert = () => {
     const baseValue = parseFloat(inputValue);
     if (!isNaN(baseValue)) {
-      setLengthConversion(`${baseValue} meters = ${baseValue * meterToFeet} feet`);
-      setVolumeConversion(`${baseValue} liters = ${baseValue * literToGallon} gallons`);
-      setMassConversion(`${baseValue} kilograms = ${baseValue * kiloToPound} pounds`);
+      setLengthConversion(`${baseValue} meters = ${(baseValue * meterToFeet).toFixed(2)} feet | ${baseValue} feet = ${(baseValue * feetToMeter).toFixed(2)} meters`);
+      setVolumeConversion(`${baseValue} liters = ${(baseValue * literToGallon).toFixed(2)} gallons | ${baseValue} gallons = ${(baseValue * gallontoLiter).toFixed(2)} liters`);
+      setMassConversion(`${baseValue} kilograms = ${(baseValue * kiloToPound).toFixed(2)} pounds | ${baseValue} pounds = ${(baseValue * poundToKilo).toFixed(2)} kilograms`);
     }
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter')
+    e.preventDefault()
+    handleConvert()
+  }
 
   return (
     <>
@@ -30,6 +39,7 @@ function App() {
             placeholder='n'
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown ={handleKeyDown}
           />
           <button id='btn-convert' onClick={handleConvert}>
             Convert
